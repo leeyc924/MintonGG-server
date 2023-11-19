@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2022",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "strictNullChecks": true,
+    "preserveValueImports": false,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "moduleResolution": "Node",
+    "paths": {
+      "@@db": ["src/db"],
+      "@@types": ["src/types"]
+    }
+  },
+  "exclude": ["build", "node_modules"]
+}
