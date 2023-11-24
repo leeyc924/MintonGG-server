@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "ES2022",
+    "target": "es5",
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
@@ -18,8 +18,9 @@
     "moduleResolution": "Node",
     "paths": {
       "@@db": ["src/db"],
-      "@@types": ["src/types"]
+      "@@types": ["src/types"],
+      "@@utils": ["src/utils"]
     }
   },
-  "exclude": ["build", "node_modules"]
+  "exclude": ["build", "node_modules", "./dist/**/*"]
 }
