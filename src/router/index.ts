@@ -1,5 +1,7 @@
 import express from 'express';
 import authRouter from './auth';
+import userRouter from './user';
+import tierRouter from './tier';
 
 const router = express.Router();
 
@@ -12,9 +14,7 @@ router.use(async (req, res, next) => {
 });
 
 router.use('/auth', authRouter);
-
-router.post('/*', async (req, res) => {
-  res.status(500).send();
-});
+router.use('/user', userRouter);
+router.use('/tier', tierRouter);
 
 export default router;

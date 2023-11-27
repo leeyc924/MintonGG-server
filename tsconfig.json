@@ -10,10 +10,11 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "paths": {
-      "@@db": ["src/db"],
-      "@@types": ["src/types"],
-      "@@utils": ["src/utils"]
+      "@db": ["src/db"],
+      "@types": ["src/types"],
+      "@utils": ["src/utils"]
     }
   },
   "include": ["src/**/*"],
