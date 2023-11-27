@@ -7,14 +7,6 @@ import dayjs from 'dayjs';
 
 const port = process.env.PORT || 8005;
 
-const client = new Client({
-  host: 'localhost',
-  database: 'MTDB',
-  port: 5432,
-});
-
-client.connect();
-
 function main() {
   const app = express();
   app.use(compression());
