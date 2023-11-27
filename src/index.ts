@@ -1,3 +1,4 @@
+import { Client } from 'pg';
 import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
@@ -5,6 +6,14 @@ import router from './router';
 import dayjs from 'dayjs';
 
 const port = process.env.PORT || 8005;
+
+const client = new Client({
+  host: 'localhost',
+  database: 'MTDB',
+  port: 5432,
+});
+
+client.connect();
 
 function main() {
   const app = express();
@@ -21,4 +30,8 @@ function main() {
   });
 }
 
-main();
+try {
+  main();
+} catch (error) {
+  console.log(error);
+}
