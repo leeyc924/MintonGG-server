@@ -2,11 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Functions",
-      "request": "launch",
       "type": "node",
-      "runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
-      "args": ["${workspaceFolder}/src/index.ts"],
+      "request": "launch",
+      "name": "Launch Program",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["pnpm", "start"],
+      "skipFiles": ["<node_internals>/**"],
       "env": {
         "NODE_ENV": "development",
         "NODE_DEBUG": "DEBUG ERROR"

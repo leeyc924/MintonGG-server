@@ -1,18 +1,12 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
+    "outDir": "./build",
     "esModuleInterop": true,
-    "noEmitOnError": true,
-    "strictNullChecks": true,
-    "preserveValueImports": false,
-    "noImplicitAny": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "skipLibCheck": true,
     "baseUrl": ".",
     "moduleResolution": "Node",
@@ -22,5 +16,6 @@
       "@@utils": ["src/utils"]
     }
   },
-  "exclude": ["build", "node_modules", "./dist/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["build", "node_modules"]
 }

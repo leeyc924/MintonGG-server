@@ -15,7 +15,6 @@ function main() {
   app.use('/*', function (req, res) {
     res.status(500).json({ message: 'Invalid Path' });
   });
-
   app.listen(port, () => {
     console.log('Express is listening on port', port);
   });
