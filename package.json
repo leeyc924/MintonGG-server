@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "tsc": "tsc",
+    "install": "npm install -g pnpm && pnpm install",
     "start": "nodemon --exec \"ts-node -r tsconfig-paths/register ./src/index.ts\""
   },
   "keywords": [],
