@@ -1,14 +1,12 @@
-import { Client } from 'pg';
 import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import router from './router';
-import dayjs from 'dayjs';
-
-const port = process.env.PORT || 8005;
 
 function main() {
+  const port = process.env.PORT;
   const app = express();
+  console.log(process.env.DB_HOST);
   app.use(compression());
   app.use(cors());
   app.use(express.json());

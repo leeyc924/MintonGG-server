@@ -1,11 +1,11 @@
 import { Pool, PoolClient, QueryResult } from 'pg';
 
 const pool = new Pool({
-  user: 'admin',
-  host: 'localhost',
-  database: 'MTDB',
-  password: 'admin123',
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: Number(process.env.DB_PORT),
 });
 
 pool.on('error', function (err: Error) {
