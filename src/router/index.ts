@@ -5,7 +5,7 @@ import tierRouter from './tier';
 
 const router = express.Router();
 
-router.use(async (req, res, next) => {
+router.use((req, res, next) => {
   try {
     next();
   } catch (error) {
