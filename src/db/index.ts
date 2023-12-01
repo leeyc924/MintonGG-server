@@ -1,3 +1,4 @@
+import { CustomError } from '@utils';
 import { Pool, PoolClient, QueryResult } from 'pg';
 
 const pool = new Pool({
@@ -24,7 +25,7 @@ export const sqlToDB = async (sql: string, data: string[][] | undefined = undefi
     result = await pool.query(sql, data);
     return result;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw CustomError.connectionError((error as Error).message);
   }
 };
 
@@ -39,7 +40,7 @@ export const getTransaction = async (): Promise<PoolClient> => {
     await client.query('BEGIN');
     return client;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw CustomError.connectionError((error as Error).message);
   }
 };
 
@@ -58,7 +59,7 @@ export const sqlExecSingleRow = async (
     const result: QueryResult = await client.query(sql, data);
     return result;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw CustomError.connectionError((error as Error).message);
   }
 };
 
@@ -78,7 +79,7 @@ export const sqlExecMultipleRows = async (client: PoolClient, sql: string, data:
       }
     }
   } else {
-    throw new Error('sqlExecMultipleRows(): No data available');
+    throw CustomError.connectionError('sqlExecMultipleRows(): No data available');
   }
 };
 
@@ -92,7 +93,7 @@ export const rollback = async (client: PoolClient): Promise<void> => {
     try {
       await client.query('ROLLBACK');
     } catch (error) {
-      throw new Error((error as Error).message);
+      throw CustomError.connectionError((error as Error).message);
     } finally {
       client.release();
     }
@@ -110,7 +111,7 @@ export const commit = async (client: PoolClient): Promise<void> => {
   try {
     await client.query('COMMIT');
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw CustomError.connectionError((error as Error).message);
   } finally {
     client.release();
   }

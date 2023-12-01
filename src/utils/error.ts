@@ -7,7 +7,11 @@ export class CustomError extends Error {
     this.status = status;
   }
 
-  static authError(message: string,): CustomError {
+  static connectionError(message: string): CustomError {
+    return new CustomError('ConnectionError', 500, message);
+  }
+
+  static authError(message: string): CustomError {
     return new CustomError('AuthError', 401, message);
   }
 
