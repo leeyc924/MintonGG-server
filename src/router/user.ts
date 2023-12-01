@@ -43,7 +43,7 @@ router.post('/add', async (req, res) => {
       users (name, gender, age, address, join_dt)
       values ('${name}','${gender}','${age}', '${address}', '${join_dt}');`;
     await sqlToDB(sql);
-    res.status(200);
+    res.status(200).json();
   } catch (error) {
     res.status(500).json(error);
   }
@@ -54,19 +54,21 @@ router.post('/edit', async (req, res) => {
     const id = parseToNumber(req.body['id']);
     const name = req.body['name'];
     const gender = req.body['gender'];
+    const age = req.body['age'];
     const address = req.body['address'];
     const join_dt = dayjs(req.body['join_dt']).toISOString().split('T')[0];
 
     const sql = `UPDATE users SET
     "name" = '${name}',
     gender = '${gender}',
+    age = '${age}',
     address = '${address}',
     join_dt = '${join_dt}',
     mod_dt = CURRENT_TIMESTAMP
     WHERE "id" = ${id}
     ;`;
     await sqlToDB(sql);
-    res.status(200);
+    res.status(200).json();
   } catch (error) {
     res.status(500).json(error);
   }
@@ -77,7 +79,7 @@ router.post('/remove', async (req, res) => {
     const id = parseToNumber(req.body['id']);
     const sql = `DELETE FROM users WHERE "id" = ${id};`;
     await sqlToDB(sql);
-    res.status(200);
+    res.status(200).json();
   } catch (error) {
     res.status(500).json(error);
   }
