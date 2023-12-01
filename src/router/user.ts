@@ -56,7 +56,7 @@ router.post('/edit', async (req, res) => {
     const gender = req.body['gender'];
     const age = req.body['age'];
     const address = req.body['address'];
-    const join_dt = dayjs(req.body['join_dt']).toISOString().split('T')[0];
+    const join_dt = dayjs(req.body['join_dt']).format('YYYY-MM-DD');
 
     const sql = `UPDATE users SET
     "name" = '${name}',
