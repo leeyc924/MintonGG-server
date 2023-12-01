@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 const router = asyncify(Router());
 
 router.get('/list', async (req, res) => {
-  const sql = 'SELECT * FROM "userss" ORDER BY "position" ASC, "name" ASC ;';
+  const sql = 'SELECT * FROM "users" ORDER BY "position" ASC, "name" ASC ;';
   const userList = await sqlToDB(sql);
   res.json({ userList: userList.rows });
 });
