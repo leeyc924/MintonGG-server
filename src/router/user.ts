@@ -31,6 +31,24 @@ router.get('/detail', async (req, res) => {
   }
 });
 
+router.post('/add', async (req, res) => {
+  try {
+    const name = req.body['name'];
+    const gender = req.body['gender'];
+    const address = req.body['address'];
+    const age = req.body['age'];
+    const join_dt = req.body['join_dt'];
+
+    const sql = `INSERT INTO 
+      users (name, gender, age, address, join_dt)
+      values ('${name}','${gender}','${age}', '${address}', '${join_dt}');`;
+    await sqlToDB(sql);
+    res.status(200);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.post('/edit', async (req, res) => {
   try {
     const id = parseToNumber(req.body['id']);
