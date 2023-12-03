@@ -1,16 +1,15 @@
 import express from 'express';
+import asyncify from 'express-asyncify';
+import jwt from 'jsonwebtoken';
 import authRouter from './auth';
 import userRouter from './user';
 import tierRouter from './tier';
+import { CustomError } from '@utils';
 
-const router = express.Router();
+const router = asyncify(express.Router());
 
-router.use((req, res, next) => {
-  try {
-    next();
-  } catch (error) {
-    res.status(403).json(error);
-  }
+router.use(async (req, res, next) => {
+  next();
 });
 
 router.use('/auth', authRouter);

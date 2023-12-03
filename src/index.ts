@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import router from './router';
 import { CustomError } from './utils/error';
 
@@ -8,7 +9,8 @@ function main() {
   const port = process.env.PORT;
   const app = express();
   app.use(compression());
-  app.use(cors());
+  app.use(cookieParser())
+  app.use(cors({ origin: '*', credentials: true }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use('/api', router);
@@ -17,6 +19,7 @@ function main() {
   });
   app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
     const status = error.status || 500;
+    console.log(error);
     res.status(status).json({ message: error.message });
   });
 

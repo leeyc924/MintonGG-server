@@ -1,23 +1,73 @@
+import { CustomError } from '@utils';
 import { Router, Request } from 'express';
+import jwt from 'jsonwebtoken';
 import asyncify from 'express-asyncify';
 
 const router = asyncify(Router());
 
 router.post('/login', async (req, res) => {
+  const { id, password } = req.body;
+  let auth = 'USER';
+  switch (id) {
+    case 'admin': {
+      if (password !== 'ad#2023') {
+        throw new CustomError('PASSWORD', 500, '비밀번호가 일치하지 않습니다');
+      }
+      auth = 'ADMIN';
+      break;
+    }
+    case 'manager': {
+      if (password !== '2023mg!') {
+        throw new CustomError('PASSWORD', 500, '비밀번호가 일치하지 않습니다');
+      }
+      auth = 'MANAGER';
+      break;
+    }
+    case 'user': {
+      if (password !== 'user2023@') {
+        throw new CustomError('PASSWORD', 500, '비밀번호가 일치하지 않습니다');
+      }
+      auth = 'USER';
+      break;
+    }
+    default: {
+      throw new CustomError('INVALID', 500, '아이디가 존재하지 않습니다');
+    }
+  }
+
+  const payload = {
+    auth,
+  };
+
+  const token = await new Promise((resolve, reject) => {
+    jwt.sign(payload, process.env.JWT_SECRET || '', { expiresIn: '365d' }, (err, token) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(token);
+      }
+    });
+  });
+
+  res.json({ accessToken: token });
+});
+
+router.post('/check', async (req, res) => {
   try {
-    const { code } = req.body;
+    const accessToken = req.cookies['accessToken'];
+    const decodedData = await new Promise((resolve, reject) => {
+      jwt.verify(accessToken as string, process.env.JWT_SECRET || '', (err, decodedData) => {
+        if (err) {
+          reject(err);
+        }
 
-    if (code === '1016') {
-      res.json({ auth: 'ADMIN' });
-    }
+        resolve(decodedData);
+      });
+    });
 
-    if (code === '0924') {
-      res.json({ auth: 'MANAGER' });
-    }
-
-    res.json({ auth: 'USER' });
+    res.json(decodedData);
   } catch (error) {
-    res.status(500).json(error);
+    throw CustomError.authError((error as Error).message);
   }
 });
 
