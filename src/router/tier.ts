@@ -16,4 +16,18 @@ router.get('/list', async (req, res) => {
   res.json({ userList: userList.rows });
 });
 
+router.post('/edit', async (req, res) => {
+  const id = req.body['id'];
+  const tier = req.body['tier'];
+
+  const sql = `
+    UPDATE users_tier SET
+    "tier" = '${tier}',
+    mod_dt = CURRENT_TIMESTAMP
+    WHERE "user_id" = ${id}
+  ;`;
+  await sqlToDB(sql);
+  res.json();
+});
+
 export default router;

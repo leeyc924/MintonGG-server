@@ -42,7 +42,7 @@ router.post('/add', async (req, res) => {
     `;
     await sqlExecSingleRow(client, sql);
     await commit(client);
-    res.status(200).json();
+    res.json();
   } catch (error) {
     await rollback(client);
     throw error;
@@ -67,7 +67,7 @@ router.post('/edit', async (req, res) => {
     WHERE "id" = ${id}
     ;`;
   await sqlToDB(sql);
-  res.status(200).json();
+  res.json();
 });
 
 router.post('/remove', async (req, res) => {
@@ -80,7 +80,7 @@ router.post('/remove', async (req, res) => {
   `;
     await sqlExecSingleRow(client, sql);
     await commit(client);
-    res.status(200).json();
+    res.json();
   } catch (error) {
     await rollback(client);
     throw error;
