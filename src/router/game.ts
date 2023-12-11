@@ -30,22 +30,22 @@ router.get('/detail', async (req, res) => {
     gameList: gameInfo.rows.reduce((acc, cur) => {
       const playDt = cur.play_dt;
       const userFullName = `${cur.name}/${cur.age.slice(2, 4)}/${cur.address}/${cur.gender === 'F' ? '여' : '남'}`;
-      const index = acc.findIndex((a: any) => a.play_dt === playDt);
+      const index = acc.findIndex((a: any) => a.playDt === playDt);
       if (index > -1) {
         acc[index].userList.push({ id: cur.id, userFullName });
         return acc;
       }
 
       acc.push({
-        play_dt: playDt,
-        play_part: cur.play_part,
+        playDt,
+        playPart: cur.play_part,
         userList: [{ id: cur.id, userFullName }],
       });
       return acc;
     }, [] as any),
   };
 
-  res.json({ gameDetail });
+  res.json(gameDetail);
 });
 
 export default router;
