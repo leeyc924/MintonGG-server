@@ -8,7 +8,15 @@ import dayjs from 'dayjs';
 const router = asyncify(Router());
 
 router.get('/list', async (req, res) => {
-  res.json();
+  const year = req.query['year'];
+  const month = req.query['month'];
+  const sql = `
+    SELECT array_length(userids, 1)
+    FROM game
+    WHERE play_year IN ('${year}') AND play_month IN ('${month}');
+  `;
+  const gameList = await sqlToDB(sql);
+  res.json(gameList);
 });
 
 router.get('/detail', async (req, res) => {
