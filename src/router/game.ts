@@ -11,12 +11,18 @@ router.get('/list', async (req, res) => {
   const year = req.query['year'];
   const month = req.query['month'];
   const sql = `
-    SELECT array_length(userids, 1)
+    SELECT array_length(userids, 1) as count, play_dt
     FROM game
     WHERE play_year IN ('${year}') AND play_month IN ('${month}');
   `;
-  const gameList = await sqlToDB(sql);
-  res.json(gameList);
+  const gameInfo = (await sqlToDB(sql)).rows
+    .map(row => ({ userCount: row.count, playDt: row.play_dt }))
+    .reduce((acc, cur) => {
+      acc[cur.playDt] = cur.userCount;
+      return acc;
+    }, {} as any);
+
+  res.json(gameInfo);
 });
 
 router.get('/detail', async (req, res) => {
@@ -57,6 +63,3 @@ router.get('/detail', async (req, res) => {
 });
 
 export default router;
-
-// INSERT INTO game (playDt, userIdList, playPart)
-// VALUES ('2023-11-29', ARRAY[1, 2, 3], 1);
