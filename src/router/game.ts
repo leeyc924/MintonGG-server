@@ -31,16 +31,20 @@ router.get('/detail', async (req, res) => {
     SELECT game.play_dt, game.play_part, users.id, users.name, users.age, users.gender, users.address
     FROM game
     JOIN users ON users.id = ANY(game.userids)
-    WHERE game.play_dt = '${playDt}';
+    WHERE game.play_dt = '${playDt}'
+    ORDER BY users.name ASC;
   `;
   const usersSql = `
     SELECT id, name, age, gender, address
-    FROM users;
+    FROM users ORDER BY "name" ASC;
   `;
   const gameInfo = await sqlToDB(sql);
   const userList = await sqlToDB(usersSql);
   const gameDetail = {
-    userList: userList.rows,
+    userList: userList.rows.map(user => ({
+      id: user.id,
+      userFullName: `${user.name}/${user.age.slice(2, 4)}/${user.address}/${user.gender === 'F' ? '여' : '남'}`,
+    })),
     gameList: gameInfo.rows.reduce((acc, cur) => {
       const playDt = cur.play_dt;
       const userFullName = `${cur.name}/${cur.age.slice(2, 4)}/${cur.address}/${cur.gender === 'F' ? '여' : '남'}`;

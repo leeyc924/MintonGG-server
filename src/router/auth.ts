@@ -10,21 +10,21 @@ router.post('/login', async (req, res) => {
   let auth = 'USER';
   switch (id) {
     case 'admin': {
-      if (password !== 'ad#2023') {
+      if (password !== 'ad#2024') {
         throw new CustomError('PASSWORD', 500, '비밀번호가 일치하지 않습니다');
       }
       auth = 'ADMIN';
       break;
     }
     case 'manager': {
-      if (password !== '2023mg!') {
+      if (password !== '2024mg!') {
         throw new CustomError('PASSWORD', 500, '비밀번호가 일치하지 않습니다');
       }
       auth = 'MANAGER';
       break;
     }
     case 'user': {
-      if (password !== 'user2023@') {
+      if (password !== 'user2024@') {
         throw new CustomError('PASSWORD', 500, '비밀번호가 일치하지 않습니다');
       }
       auth = 'USER';
