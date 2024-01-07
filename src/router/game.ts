@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import asyncify from 'express-asyncify';
 import userTierJson from '../db/userTier.json';
-import { sqlToDB } from '@db';
+import { commit, getTransaction, rollback, sqlExecSingleRow, sqlToDB } from '@db';
 import { parseToNumber } from '@utils';
 import dayjs from 'dayjs';
 
@@ -64,6 +64,30 @@ router.get('/detail', async (req, res) => {
   };
 
   res.json(gameDetail);
+});
+
+router.post('/add', async (req, res) => {
+  const client = await getTransaction();
+  try {
+    const play_dt = req.body['play_dt'];
+    const userids = req.body['userids']?.join(', ');
+    const play_part = req.body['play_part'];
+    const play_month = dayjs(play_dt).format('MM');
+    const play_year = dayjs(play_dt).format('YYYY');
+
+    const sql = `
+      INSERT INTO game (play_dt, userids, play_part, play_month, play_year)
+      VALUES ('${play_dt}', '{${userids}}', '${play_part}', '${play_month}', '${play_year}')
+      ON CONFLICT (play_dt) DO UPDATE
+      SET userids = '{${userids}}', play_part = '${play_part}';
+    `;
+    await sqlExecSingleRow(client, sql);
+    await commit(client);
+    res.json();
+  } catch (error) {
+    await rollback(client);
+    throw error;
+  }
 });
 
 export default router;
