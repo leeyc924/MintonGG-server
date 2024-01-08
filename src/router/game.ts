@@ -90,4 +90,22 @@ router.post('/add', async (req, res) => {
   }
 });
 
+router.post('/remove', async (req, res) => {
+  const client = await getTransaction();
+  try {
+    const play_dt = req.body['play_dt'];
+    const userids = req.body['userids']?.join(', ');
+    const sql = `
+      UPDATE game SET userids = '{${userids}}'
+      WHERE play_dt = '${play_dt}';
+    `;
+    await sqlExecSingleRow(client, sql);
+    await commit(client);
+    res.json();
+  } catch (error) {
+    await rollback(client);
+    throw error;
+  }
+});
+
 export default router;
