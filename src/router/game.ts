@@ -46,17 +46,17 @@ router.get('/detail', async (req, res) => {
       userFullName: `${user.name}/${user.age.slice(2, 4)}/${user.address}/${user.gender === 'F' ? '여' : '남'}`,
     })),
     gameList: gameInfo.rows.reduce((acc, cur) => {
-      const playDt = cur.play_dt;
+      const playPart = cur.play_part;
       const userFullName = `${cur.name}/${cur.age.slice(2, 4)}/${cur.address}/${cur.gender === 'F' ? '여' : '남'}`;
-      const index = acc.findIndex((a: any) => a.playDt === playDt);
+      const index = acc.findIndex((a: any) => a.playPart === playPart);
       if (index > -1) {
         acc[index].userList.push({ id: cur.id, userFullName });
         return acc;
       }
 
       acc.push({
-        playDt,
-        playPart: cur.play_part,
+        playDt: cur.play_dt,
+        playPart,
         userList: [{ id: cur.id, userFullName }],
       });
       return acc;
@@ -75,11 +75,14 @@ router.post('/add', async (req, res) => {
     const play_month = dayjs(play_dt).format('MM');
     const play_year = dayjs(play_dt).format('YYYY');
 
-    const sql = `
-      INSERT INTO game (play_dt, userids, play_part, play_month, play_year)
-      VALUES ('${play_dt}', '{${userids}}', '${play_part}', '${play_month}', '${play_year}')
-      ON CONFLICT (play_dt) DO UPDATE
-      SET userids = '{${userids}}', play_part = '${play_part}';
+    const sql = userids ? `
+      INSERT INTO game (play_part_dt, play_dt, userids, play_part, play_month, play_year)
+      VALUES ('${play_part}-${play_dt}', '${play_dt}', '{${userids}}', '${play_part}', '${play_month}', '${play_year}')
+      ON CONFLICT (play_part_dt) DO UPDATE
+      SET userids = '{${userids}}';
+    ` : `
+      DELETE FROM game
+      WHERE play_part_dt = '${play_part}-${play_dt}';
     `;
     await sqlExecSingleRow(client, sql);
     await commit(client);
