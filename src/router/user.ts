@@ -7,7 +7,30 @@ import dayjs from 'dayjs';
 const router = asyncify(Router());
 
 router.get('/list', async (req, res) => {
-  const sql = 'SELECT * FROM "users" ORDER BY "position" ASC, "name" ASC ;';
+  const sql = `
+    SELECT
+      u.id,
+      CONCAT_WS('/', u.name,
+        RIGHT(u.age, 2),
+        u.address,
+        CASE
+          WHEN u.gender = 'M' THEN '남'
+          WHEN u.gender = 'F' THEN '여'
+          ELSE u.gender
+        END
+      ) AS full_name,
+      u.join_dt,
+      (
+        SELECT MAX(g.play_dt)
+        FROM game g
+        WHERE u.id = ANY(g.userids)
+      ) AS play_dt
+    FROM
+      users u
+    ORDER BY
+      u."position" ASC, u."name" ASC;
+  `;
+
   const userList = await sqlToDB(sql);
   res.json({ userList: userList.rows });
 });
