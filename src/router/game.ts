@@ -11,9 +11,13 @@ router.get('/list', async (req, res) => {
   const year = req.query['year'];
   const month = req.query['month'];
   const sql = `
-    SELECT array_length(userids, 1) as count, play_dt
-    FROM game
-    WHERE play_year IN ('${year}') AND play_month IN ('${month}');
+    SELECT count(DISTINCT user_id) as count, play_dt
+    FROM (
+      SELECT DISTINCT unnest(userids) AS user_id, play_dt, play_part
+      FROM game
+      WHERE play_year = '${year}' AND play_month = '${month}' AND play_part IN (1, 2, 3, 4)
+    ) AS subquery
+    GROUP BY play_dt;
   `;
   const gameInfo = (await sqlToDB(sql)).rows
     .map(row => ({ userCount: row.count, playDt: row.play_dt }))
