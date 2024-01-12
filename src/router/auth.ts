@@ -59,6 +59,7 @@ router.post('/check', async (req, res) => {
     const decodedData = await new Promise((resolve, reject) => {
       jwt.verify(accessToken as string, process.env.JWT_SECRET || '', (err, decodedData) => {
         if (err) {
+          console.log('jwt err', err);
           reject(err);
         }
 
