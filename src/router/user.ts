@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 const router = asyncify(Router());
 
 router.get('/list', async (req, res) => {
+  const month = dayjs().format('MM');
   const sql = `
     SELECT
       u.id,
@@ -33,7 +34,7 @@ router.get('/list', async (req, res) => {
         game g
         JOIN unnest(g.userids) AS user_id ON TRUE
       WHERE
-        u.id = user_id AND g.play_month = '01'
+        u.id = user_id AND g.play_month = '${month}'
       ) g ON TRUE
     GROUP BY
       u.id, u.name, u.age, u.address, u.gender, u.join_dt
