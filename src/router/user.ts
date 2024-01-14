@@ -21,21 +21,18 @@ router.get('/list', async (req, res) => {
         END
       ) AS full_name,
       u.join_dt,
-      MAX(g.play_dt) AS play_dt,
-      COUNT(g.play_part) AS play_count
+      (
+        SELECT MAX(g.play_dt)
+        FROM game g
+        WHERE u.id = ANY(g.userids)
+      ) AS play_dt,
+      (
+        SELECT COUNT(g.play_part)
+        FROM game g
+        WHERE u.id = ANY(g.userids) AND g.play_month = '01'
+      ) AS play_count
     FROM
       users u
-    LEFT JOIN LATERAL (
-      SELECT
-        user_id,
-        play_dt,
-        play_part
-      FROM
-        game g
-        JOIN unnest(g.userids) AS user_id ON TRUE
-      WHERE
-        u.id = user_id AND g.play_month = '${month}'
-      ) g ON TRUE
     GROUP BY
       u.id, u.name, u.age, u.address, u.gender, u.join_dt
     ORDER BY
