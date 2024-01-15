@@ -70,7 +70,7 @@ router.get('/detail', async (req, res) => {
   res.json(gameDetail);
 });
 
-router.post('/add', async (req, res) => {
+router.post('/upsert', async (req, res) => {
   const client = await getTransaction();
   try {
     const play_dt = req.body['play_dt'];
@@ -101,10 +101,11 @@ router.post('/remove', async (req, res) => {
   const client = await getTransaction();
   try {
     const play_dt = req.body['play_dt'];
+    const play_part = req.body['play_part'];
     const userids = req.body['userids']?.join(', ');
     const sql = `
       UPDATE game SET userids = '{${userids}}'
-      WHERE play_dt = '${play_dt}';
+      WHERE play_dt = '${play_dt}' AND play_part = '${play_part}';
     `;
     await sqlExecSingleRow(client, sql);
     await commit(client);
