@@ -32,36 +32,52 @@ router.get('/list', async (req, res) => {
 router.get('/detail', async (req, res) => {
   const playDt = req.query['playDt'];
   const sql = `
-    SELECT game.play_dt, game.play_part, users.id, users.name, users.age, users.gender, users.address
+    SELECT game.play_dt, game.play_part, users.id,
+    CONCAT_WS('/', 
+      users.name,
+      RIGHT(users.age, 2),
+      users.address,
+      CASE
+        WHEN users.gender = 'M' THEN '남'
+        WHEN users.gender = 'F' THEN '여'
+        ELSE users.gender
+      END
+    ) AS full_name
     FROM game
     JOIN users ON users.id = ANY(game.userids)
     WHERE game.play_dt = '${playDt}'
     ORDER BY users.name ASC;
   `;
   const usersSql = `
-    SELECT id, name, age, gender, address
-    FROM users ORDER BY "name" ASC;
+    SELECT id,
+    CONCAT_WS('/', 
+      u.name,
+      RIGHT(u.age, 2),
+      u.address,
+      CASE
+        WHEN u.gender = 'M' THEN '남'
+        WHEN u.gender = 'F' THEN '여'
+        ELSE u.gender
+      END
+    ) AS full_name
+    FROM users u ORDER BY "name" ASC;
   `;
   const gameInfo = await sqlToDB(sql);
   const userList = await sqlToDB(usersSql);
   const gameDetail = {
-    userList: userList.rows.map(user => ({
-      id: user.id,
-      userFullName: `${user.name}/${user.age.slice(2, 4)}/${user.address}/${user.gender === 'F' ? '여' : '남'}`,
-    })),
+    userList: userList.rows,
     gameList: gameInfo.rows.reduce((acc, cur) => {
       const playPart = cur.play_part;
-      const userFullName = `${cur.name}/${cur.age.slice(2, 4)}/${cur.address}/${cur.gender === 'F' ? '여' : '남'}`;
       const index = acc.findIndex((a: any) => a.playPart === playPart);
       if (index > -1) {
-        acc[index].userList.push({ id: cur.id, userFullName });
+        acc[index].userList.push({ id: cur.id, full_name: cur.full_name });
         return acc;
       }
 
       acc.push({
         playDt: cur.play_dt,
         playPart,
-        userList: [{ id: cur.id, userFullName }],
+        userList: [{ id: cur.id, full_name: cur.full_name }],
       });
       return acc;
     }, [] as any),
