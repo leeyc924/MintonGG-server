@@ -29,7 +29,7 @@ router.get('/list', async (req, res) => {
       (
         SELECT COUNT(g.play_part)
         FROM game g
-        WHERE u.id = ANY(g.userids) AND g.play_month = '01'
+        WHERE u.id = ANY(g.userids) AND g.play_month = '${month}'
       ) AS play_count
     FROM
       users u
