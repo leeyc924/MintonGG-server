@@ -11,6 +11,7 @@ router.get('/list', async (req, res) => {
   const sql = `
     SELECT
       u.id,
+      u.position,
       CONCAT_WS('/', u.name,
         RIGHT(u.age, 2),
         u.address,
