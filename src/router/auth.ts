@@ -2,6 +2,7 @@ import { CustomError } from '@utils';
 import { Router, Request } from 'express';
 import jwt from 'jsonwebtoken';
 import asyncify from 'express-asyncify';
+import dayjs from 'dayjs';
 
 const router = asyncify(Router());
 
@@ -49,6 +50,7 @@ router.post('/login', async (req, res) => {
     });
   });
 
+  res.cookie('accessToken', token, { expires: dayjs().add(365, 'day').toDate() });
   res.json({ accessToken: token });
 });
 
