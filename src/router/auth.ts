@@ -57,6 +57,7 @@ router.post('/login', async (req, res) => {
 router.post('/check', async (req, res) => {
   try {
     const accessToken = req.cookies['accessToken'];
+    console.log(req.cookies);
     const decodedData = await new Promise((resolve, reject) => {
       jwt.verify(accessToken as string, process.env.JWT_SECRET || '', (err, decodedData) => {
         if (err) {
