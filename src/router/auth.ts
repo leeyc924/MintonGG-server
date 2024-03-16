@@ -53,8 +53,8 @@ router.post('/login', async (req, res) => {
   res.cookie('accessToken', token, {
     expires: dayjs().add(365, 'day').toDate(),
     secure: true,
-    sameSite: 'strict',
-    httpOnly: true,
+    sameSite: 'none',
+    path: '/'
   });
   res.json({ accessToken: token });
 });
