@@ -4,7 +4,6 @@ import authRouter from './auth';
 import userRouter from './user';
 import tierRouter from './tier';
 import gameRouter from './game';
-import game2Router from './game2';
 import homeRouter from './home';
 import jwt from 'jsonwebtoken';
 
@@ -36,7 +35,6 @@ router.use('/auth', authRouter);
 router.use('/user', userRouter);
 router.use('/tier', tierRouter);
 router.use('/game', gameRouter);
-router.use('/game2', game2Router);
 router.use('/home', homeRouter);
 
 export default router;

@@ -74,4 +74,13 @@ router.post('/check', async (req, res) => {
   }
 });
 
+router.post('/logout', async (req, res) => {
+  try {
+    res.clearCookie('accessToken');
+    res.json({ resultFlag: true });
+  } catch (error) {
+    throw CustomError.authError((error as Error).message);
+  }
+});
+
 export default router;

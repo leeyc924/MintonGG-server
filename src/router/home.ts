@@ -25,7 +25,7 @@ router.get('/new-user', async (req, res) => {
     WHERE EXTRACT(YEAR FROM join_dt) = ${year}
     AND EXTRACT(MONTH FROM join_dt) = ${month}
     ORDER BY
-      join_dt ASC, name ASC;
+      join_dt DESC, name ASC;
   `;
 
   const userList = (await sqlToDB(sql)).rows.reduce((acc, cur) => {
@@ -60,7 +60,7 @@ router.get('/best-user', async (req, res) => {
     FROM users u
     JOIN (
       SELECT unnest(userids) AS user_id
-      FROM game2
+      FROM game
       WHERE play_month = '${month}' AND play_year = '${year}'
     ) g ON u.id = g.user_id
     GROUP BY u.id, u.name, u.age, u.address, u.gender
