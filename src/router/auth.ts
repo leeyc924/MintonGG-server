@@ -50,7 +50,12 @@ router.post('/login', async (req, res) => {
     });
   });
 
-  res.cookie('accessToken', token, { expires: dayjs().add(365, 'day').toDate(), secure: true, sameSite: 'none' });
+  res.cookie('accessToken', token, {
+    expires: dayjs().add(365, 'day').toDate(),
+    secure: true,
+    sameSite: 'strict',
+    httpOnly: true,
+  });
   res.json({ accessToken: token });
 });
 
