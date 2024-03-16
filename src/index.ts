@@ -8,7 +8,7 @@ import { CustomError } from './utils/error';
 function main() {
   const port = process.env.PORT;
   const app = express();
-  app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+  app.use(cors({ origin: process.env.FE_URL, credentials: true }));
   app.use(compression());
   app.use(cookieParser());
   app.use(express.json());
