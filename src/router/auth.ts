@@ -50,18 +50,13 @@ router.post('/login', async (req, res) => {
     });
   });
 
-  res.cookie('accessToken', token, {
-    expires: dayjs().add(365, 'day').toDate(),
-    secure: true,
-    sameSite: 'none',
-    path: '/'
-  });
   res.json({ accessToken: token });
 });
 
 router.post('/check', async (req, res) => {
   try {
-    const accessToken = req.cookies['accessToken'];
+    const bearerAccessToken = req.headers['authorization'];
+    const accessToken = bearerAccessToken?.split(' ')[1] ?? '';
     const decodedData = await new Promise((resolve, reject) => {
       jwt.verify(accessToken as string, process.env.JWT_SECRET || '', (err, decodedData) => {
         if (err) {
@@ -81,7 +76,6 @@ router.post('/check', async (req, res) => {
 
 router.post('/logout', async (req, res) => {
   try {
-    res.clearCookie('accessToken');
     res.json({ resultFlag: true });
   } catch (error) {
     throw CustomError.authError((error as Error).message);

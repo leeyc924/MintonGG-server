@@ -15,7 +15,8 @@ router.use(async (req, res, next) => {
     return;
   }
 
-  const accessToken = req.cookies['accessToken'];
+  const bearerAccessToken = req.headers['authorization'];
+  const accessToken = bearerAccessToken?.split(' ')[1] ?? '';
   await new Promise((resolve, reject) => {
     jwt.verify(accessToken as string, process.env.JWT_SECRET || '', (err, decodedData) => {
       if (err) {
