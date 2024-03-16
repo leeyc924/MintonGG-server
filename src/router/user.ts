@@ -63,9 +63,6 @@ router.post('/add', async (req, res) => {
       INSERT INTO 
       users (name, gender, age, address, join_dt)
       VALUES ('${name}','${gender}','${age}', '${address}', '${join_dt}');
-
-      INSERT INTO users_tier (user_id, tier)
-      VALUES (CURRVAL('users_id_seq'), 0);
     `;
     await sqlExecSingleRow(client, sql);
     await commit(client);
@@ -105,7 +102,6 @@ router.post('/remove', async (req, res) => {
     const id = parseToNumber(req.body['id']);
     const sql = `
     DELETE FROM users WHERE "id" = ${id};
-    DELETE FROM users_tier WHERE "user_id" = ${id};
   `;
     await sqlExecSingleRow(client, sql);
     await commit(client);

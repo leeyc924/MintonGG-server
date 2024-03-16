@@ -1,10 +1,4 @@
 /**
- * 유저 티어 정보
- * 0: 알수 없음
- * 1 ~ 5: 1~5 티어
- */
-export type Tier = 0 | 1 | 2 | 3 | 4 | 5;
-/**
  * 성별 정보
  * F: 여자
  * M: 남자
@@ -46,27 +40,6 @@ export interface User {
    * 수정 날짜
    */
   mod_dt: string;
-}
-
-export interface UserTier {
-  /**
-   * seqno
-   */
-  id: string;
-  /**
-   * 유저 티어 정보
-   * 0: 알수 없음
-   * 1 ~ 5: 1~5 티어
-   */
-  tier: Tier;
-  /**
-   * 수정 날짜
-   */
-  mod_dt: string;
-  /**
-   * user 고유 id
-   */
-  user_id: string;
 }
 
 export interface UserWarning {

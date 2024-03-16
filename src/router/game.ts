@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import asyncify from 'express-asyncify';
-import userTierJson from '../db/userTier.json';
 import { commit, getTransaction, rollback, sqlExecSingleRow, sqlToDB } from '@db';
-import { parseToNumber } from '@utils';
 import dayjs from 'dayjs';
 
 const router = asyncify(Router());
