@@ -26,12 +26,7 @@ router.get('/list', async (req, res) => {
         SELECT MAX(g.play_dt)
         FROM game g
         WHERE u.id = ANY(g.userids)
-      ) AS play_dt,
-      (
-        SELECT COUNT(g.play_part)
-        FROM game g
-        WHERE u.id = ANY(g.userids) AND g.play_month = '${month}'
-      ) AS play_count
+      ) AS play_dt
     FROM
       users u
     GROUP BY
