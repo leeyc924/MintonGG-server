@@ -30,14 +30,17 @@ router.get('/new-user', async (req, res) => {
 
   const userList = (await sqlToDB(sql)).rows.reduce((acc, cur) => {
     const joinDt = cur.join_dt;
-    if (acc[joinDt]) {
-      acc[joinDt].push(cur);
+
+    const index = acc.findIndex((prev: any) => prev.join_dt === joinDt);
+    if (index > -1) {
+      acc[index].userList.push(cur.full_name);
       return acc;
     }
 
-    acc = { ...acc, [joinDt]: [cur] };
+    acc.push({ joinDt, userList: [cur.full_name] });
     return acc;
-  }, {});
+  }, []);
+
   res.json({ userList });
 });
 
