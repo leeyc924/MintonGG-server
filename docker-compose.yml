@@ -1,0 +1,17 @@
+version: "0.1"
+
+services:
+  ### postgresql
+  postgresql:
+    image: postgres:15.5
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    ports:
+      - 15432:5432
+volumes:
+  postgresql-data:
