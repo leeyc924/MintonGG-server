@@ -1,22 +1,29 @@
 {
+
   "compilerOptions": {
-    "module": "CommonJS",
-    "target": "es6",
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "baseUrl": "./",
+    "incremental": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "moduleResolution": "Node",
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "composite": false,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "inlineSources": false,
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "paths": {
-      "@db": ["src/db"],
-      "@types": ["src/types"],
-      "@utils": ["src/utils"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["build", "node_modules"]
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strict": true,
+  }
 }

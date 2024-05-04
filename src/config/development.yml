@@ -1,0 +1,11 @@
+app:
+  environment: development
+  port: 8005
+  jwt-secret: leeycmintongg
+  client-url: http://localhost:5173
+db:
+  user: admin
+  host: localhost
+  port: 15432
+  database: mtdb
+  password: mysecretpassword

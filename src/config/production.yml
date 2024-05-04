@@ -1,0 +1,11 @@
+app:
+  environment: production
+  port: 8005
+  jwt-secret: leeycmintongg
+  client-url: https://mintongg.netlify.app
+db:
+  user: admin
+  host: localhost
+  port: 15432
+  database: mtdb
+  password: mysecretpassword
