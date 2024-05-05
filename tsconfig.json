@@ -1,5 +1,4 @@
 {
-
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -25,5 +24,10 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "strict": true,
+    "paths": {
+      "@config/*": [
+        "./src/config/*"
+      ]
+    }
   }
 }

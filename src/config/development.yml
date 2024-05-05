@@ -4,8 +4,9 @@ app:
   jwt-secret: leeycmintongg
   client-url: http://localhost:5173
 db:
-  user: admin
+  username: postgres
   host: localhost
   port: 15432
-  database: mtdb
+  database: postgres
   password: mysecretpassword
+  synchronize: true

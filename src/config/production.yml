@@ -4,8 +4,9 @@ app:
   jwt-secret: leeycmintongg
   client-url: https://mintongg.netlify.app
 db:
-  user: admin
+  username: postgres
   host: localhost
   port: 15432
-  database: mtdb
+  database: postgres
   password: mysecretpassword
+  synchronize: false
