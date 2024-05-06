@@ -26,7 +26,10 @@
     "strict": true,
     "paths": {
       "@config/*": [
-        "./src/config/*"
+        "src/config/*"
+      ],
+      "@api/*": [
+        "src/api/*"
       ]
     }
   }

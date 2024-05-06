@@ -5,13 +5,27 @@ services:
   postgresql:
     image: postgres:15.5
     restart: always
+    container_name: postgres
     environment:
       POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_USERNAME: admin
-      POSTGRES_DB: mtdb
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DB: postgres
     volumes:
       - postgresql-data:/var/lib/postgresql/data
     ports:
       - 15432:5432
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgresql
+    links:
+      - postgresql:postgresql
+    volumes:
+      - ./src:/app/src
 volumes:
   postgresql-data:
