@@ -18,6 +18,10 @@ export class UserService {
         id: true,
         joinDt: true,
         position: true,
+        address: true,
+        age: true,
+        gender: true,
+        name: true,
       },
     });
     return userList;
