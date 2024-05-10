@@ -27,6 +27,11 @@ export class UserService {
     return userList;
   }
 
+  async detail(id: number) {
+    const userList = await this.userRepo.findBy({ id: id });
+    return userList;
+  }
+
   async create(createUserDto: CreateUserDto) {
     const res = await this.userRepo.insert(createUserDto);
     return res;

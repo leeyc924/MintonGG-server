@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -11,6 +11,11 @@ export class UserController {
   @Get()
   list() {
     return this.userService.list();
+  }
+
+  @Get()
+  detail(@Param('id') id: string) {
+    return this.userService.detail(+id);
   }
 
   @Post()
