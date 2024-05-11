@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDetailResponse } from './dto/read-user.dto';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
@@ -13,23 +13,20 @@ export class UserService {
   ) {}
 
   async list() {
-    const userList = await this.userRepo.find({
-      select: {
-        id: true,
-        joinDt: true,
-        position: true,
-        address: true,
-        age: true,
-        gender: true,
-        name: true,
-      },
-    });
+    const userList = await this.userRepo
+      .createQueryBuilder('user')
+      .select(['user.id', 'user.joinDt', 'user.position', 'user.address', 'user.age', 'user.gender', 'user.name'])
+      .getRawMany();
     return userList;
   }
 
   async detail(id: number) {
-    const userList = await this.userRepo.findBy({ id: id });
-    return userList;
+    const userInfo = await this.userRepo
+      .createQueryBuilder('user')
+      .select(['user.id', 'user.joinDt', 'user.position', 'user.address', 'user.age', 'user.gender', 'user.name'])
+      .where('user.id = :id', { id })
+      .getOne();
+    return userInfo;
   }
 
   async create(createUserDto: CreateUserDto) {

@@ -13,7 +13,7 @@ export class UserController {
     return this.userService.list();
   }
 
-  @Get()
+  @Get(':id')
   detail(@Param('id') id: string) {
     return this.userService.detail(+id);
   }
