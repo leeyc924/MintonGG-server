@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDetailResponse } from './dto/read-user.dto';
 import { UserEntity } from './entities/user.entity';
@@ -26,7 +27,8 @@ export class UserService {
       .select(['user.id', 'user.joinDt', 'user.position', 'user.address', 'user.age', 'user.gender', 'user.name'])
       .where('user.id = :id', { id })
       .getOne();
-    return userInfo;
+
+    return plainToInstance(UserDetailResponse, userInfo);
   }
 
   async create(createUserDto: CreateUserDto) {
